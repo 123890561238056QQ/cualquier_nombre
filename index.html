@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carta para Greisy 💗</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(180deg,#ffd6e8,#ffc0d9);
+        overflow:hidden;
+        font-family:'Arial';
+    }
+
+    /* Corazones en esquinas */
+    .corner-heart{
+        position:absolute;
+        font-size:40px;
+        opacity:0.55;
+    }
+    .c1{ top:20px; left:20px; }
+    .c2{ top:20px; right:20px; }
+    .c3{ bottom:20px; left:20px; }
+    .c4{ bottom:20px; right:20px; }
+
+    /* CONTENEDOR */
+    .carta-container{
+        position:relative;
+        width:330px;
+        height:240px;
+        cursor:pointer;
+    }
+
+    /* CUERPO DEL SOBRE */
+    .sobre{
+        position:absolute;
+        width:100%;
+        height:100%;
+        background:#ff9fbc;
+        border-radius:12px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.2);
+        z-index:1;
+    }
+
+    /* CORAZÓN ROJO DEL SOBRE */
+    .corazon-sobre{
+        position:absolute;
+        width:45px;
+        height:45px;
+        background:#c62828;
+        clip-path:polygon(50% 75%, 61% 62%, 75% 55%, 88% 57%, 94% 68%, 92% 80%, 82% 92%, 67% 100%, 50% 95%, 33% 100%, 18% 92%, 8% 80%, 6% 68%, 12% 57%, 25% 55%, 39% 62%);
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        z-index:6;
+        transition:1s;
+    }
+
+    /* BISAGRA */
+    .bisagra{
+        position:absolute;
+        top:-8px;
+        left:0;
+        width:100%;
+        height:12px;
+        background:#ff9fbc;
+        border-radius:5px 5px 0 0;
+        z-index:3;
+    }
+
+    /* TAPA */
+    .tapa{
+        position:absolute;
+        width:100%;
+        height:100%;
+        background:#ffbfd4;
+        clip-path:polygon(0% 0%,100% 0%,50% 55%);
+        transform-origin:top center;
+        transition:transform 1s ease;
+        z-index:3;
+    }
+
+    /* CARTA */
+    .carta{
+        position:absolute;
+        width:85%;
+        left:50%;
+        top:60%;
+        transform:translateX(-50%);
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        opacity:0;
+        transition:1.2s ease;
+        z-index:10;
+        font-size:15px;
+        line-height:1.5;
+    }
+
+    .mostrarCarta{
+        top:-40%;
+        opacity:1;
+    }
+
+    /* corazones flotando */
+    .heart{
+        position:absolute;
+        font-size:22px;
+        color:#b57bff;
+        animation:float 4s linear infinite;
+    }
+
+    @keyframes float {
+        0%{ transform:translateY(0); opacity:1; }
+        100%{ transform:translateY(-200px); opacity:0; }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- corazones esquinas -->
+<div class="corner-heart c1">💜</div>
+<div class="corner-heart c2">💜</div>
+<div class="corner-heart c3">💜</div>
+<div class="corner-heart c4">💜</div>
+
+<!-- MÚSICA (IMPORTANTE: ESTA ES LA RUTA CORRECTA) -->
+<audio id="musica" src="musica/song.mp3"></audio>
+
+<div class="carta-container" onclick="abrir()">
+
+    <div class="sobre"></div>
+
+    <!-- ❤️ CORAZÓN EN EL SOBRE ❤️ -->
+    <div class="corazon-sobre" id="corazon"></div>
+
+    <div class="bisagra"></div>
+    <div class="tapa" id="tapa"></div>
+
+    <div class="carta" id="carta">
+        <h3 style="color:#ff5a8a; text-align:center;">💗 Para Greisy 💗</h3>
+
+        Quiero que sepas que <b>nunca ha sido mi intención hacerte sentir mal</b>.  
+        A veces mis inseguridades hablan por mí…  
+        pero estoy trabajando en mí, porque tú lo vales,  
+        porque quiero ser mejor para ti y para lo nuestro.  
+        <br><br>
+
+        Gracias por quedarte incluso cuando no ha sido fácil.  
+        Gracias por tu paciencia, tu cariño  
+        y por seguir aquí conmigo.  
+        <br><br>
+
+        Pase lo que pase…  
+        <b>te voy a amar siempre</b>  
+        y <b>siempre voy a estar para ti</b>. 💜  
+        <br><br>
+
+        Con amor,<br>
+        <b>Juan Felipe</b> 💗
+    </div>
+
+</div>
+
+<script>
+
+let abierto = false;
+let intervaloCorazones = null;
+
+function abrir(){
+
+    let tapa = document.getElementById("tapa");
+    let carta = document.getElementById("carta");
+    let musica = document.getElementById("musica");
+    let corazon = document.getElementById("corazon");
+
+    if(!abierto){
+
+        // 🟣 Desbloquea sonido si Chrome lo bloquea
+        musica.play().catch(e => {
+            console.log("Haz clic en la pantalla para activar el audio.");
+        });
+
+        tapa.style.transform="rotateX(160deg)";
+        corazon.style.opacity="0";
+
+        setTimeout(()=>{
+            carta.classList.add("mostrarCarta");
+        },500);
+
+        intervaloCorazones = setInterval(() => corazones(), 400);
+
+        abierto = true;
+
+    } else {
+
+        tapa.style.transform="rotateX(0deg)";
+        carta.classList.remove("mostrarCarta");
+        corazon.style.opacity="1";
+
+        clearInterval(intervaloCorazones);
+        intervaloCorazones = null;
+
+        abierto = false;
+    }
+}
+
+function corazones(){
+    let h = document.createElement("div");
+    h.classList.add("heart");
+    h.innerHTML = "💜";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.top = "90vh";
+    h.style.animationDuration = (3 + Math.random()*2) + "s";
+    document.body.appendChild(h);
+
+    setTimeout(() => h.remove(), 5000);
+}
+
+</script>
+
+</body>
+</html>
